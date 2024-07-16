@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jwt-app
+  labels:
+    app: jwt-app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: jwt-app
+  template:
+    metadata:
+      labels:
+        app: jwt-app
+    spec:
+      containers:
+      - name: netflix-app
+        image: vicky275/jwtbasic:v07
+        ports:
+        - containerPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jwt-app
+  labels:
+    app: jwt-app
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 3000
+    nodePort: 30007
+  selector:
+    app: jwt-app
